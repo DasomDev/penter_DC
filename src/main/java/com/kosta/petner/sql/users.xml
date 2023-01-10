@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.users">
+	<!-- 회원가입 -->
+	<insert id="insertUsers"
+		parameterType="com.kosta.petner.bean.Users">
+		<![CDATA[
+			INSERT INTO USERS(user_no, 
+							 user_type, 
+							 id, 
+							 nickname, 
+							 email, 
+							 password, 
+							 name, 
+							 joindate, 
+							 gender, 
+							 zipcode, 
+							 addr, 
+							 addr_detail, 
+							 user_level, 
+							 user_auth,
+							 file_no)
+				values(seq_user_no.nextval, 
+							#{user_type}, 
+							#{id},
+							#{nickname}, 
+							#{email}, 
+							#{password},
+							#{name},
+							 sysdate, 
+							#{gender}, 
+							#{zipcode},
+							#{addr}, 
+							#{addr_detail},
+							'BRONZE',
+							 1,
+							 0)					
+		]]>
+	</insert>
+
+	<!-- 중복체크 -->
+	<select id="selectId" parameterType="String"
+		resultType="com.kosta.petner.bean.Users">
+	<![CDATA[
+	select * from users where id =#{id}
+	]]>
+	</select>
+
+	<select id="getUserByUserNo" parameterType="Integer"
+		resultType="com.kosta.petner.bean.Users">
+	<![CDATA[
+	select * from users where user_no = #{user_no}
+	]]>
+	</select>
+
+	<!-- 로그인 -->
+	<select id="loginById" parameterType="com.kosta.petner.bean.Users" resultType="com.kosta.petner.bean.Users">
+	<![CDATA[
+		select *
+		from users 
+		where id=#{id} 
+	]]>
+	</select>
+	  
+    <!-- 로그인된 경우 해당 세션id와 유효시간을 사용자 테이블에 세팅한다.-->
+    <update id="keepLogin">
+    <![CDATA[
+        update users set sessionkey = #{sessionId}, sessionlimit = #{next} where id=#{id}
+        ]]>
+    </update>
+     
+    <!--유효기간이 남아 있으면서 해당 sessionId를 가지는 사용자 정보를 꺼내오는 부분-->
+    <select id="checkUserWithSessionKey" resultType="com.kosta.petner.bean.Users" parameterType="String">
+    <![CDATA[
+        select * from users where sessionkey = #{sessionId} and sessionlimit > sysdate
+        ]]>
+    </select>
+	
+	
+	
+
+	<!-- 아이디찾기 -->
+	<select id="getId" parameterType="map"
+		resultType="com.kosta.petner.bean.Users">
+	<![CDATA[
+		select *
+		from users
+		where name=#{name,jdbcType=VARCHAR} and email=#{email}
+	]]>
+	</select>
+
+ 
+    <!-- 임시비밀번호발급 -->
+	<update id="updateTmp" parameterType="com.kosta.petner.bean.Users">
+	<![CDATA[ 
+	    update users 
+	    set password = #{password,jdbcType=VARCHAR}
+	    where id = #{id,jdbcType=VARCHAR}
+	    and email = #{email}
+	 ]]>
+	</update>
+	
+	<!-- 비밀번호체크 -->
+	<select id="checkPass" parameterType="map" 
+		resultType="com.kosta.petner.bean.Users">
+	<![CDATA[ 
+		select * 
+		from users 
+		where id = #{id} and password = #{password}
+	]]>
+	</select>
+	
+	<!-- 비밀번호수정 -->
+	<update id="updatePass">
+	<![CDATA[
+		update users set password = #{password} where id = #{id}
+	]]>
+	</update>
+	
+		
+
+	<!-- 카카오 정보 찾기 -->
+	<select id="findKakao" parameterType="java.util.HashMap"
+		resultType="com.kosta.petner.bean.Users">
+		<![CDATA[
+		select *
+		from users 
+		where nickname=#{nickname} and email=#{email}
+		]]>
+	</select>
+
+	<!-- 카카오 정보 저장 (일반회원에 비해 저장되는 값이 적음) -->
+	<insert id="kakaoInsert" parameterType="java.util.HashMap">
+		<![CDATA[
+		insert into 
+			users(user_no,
+					id,
+					nickname, 
+					email,
+					user_level,
+					user_auth, 
+					joindate,
+					file_no)
+			values(seq_user_no.nextval,
+					#{email},
+					#{nickname},
+					#{email},	
+					'BRONZE',
+					2,
+					sysdate,
+					0)
+			]]>
+	</insert>
+
+
+	<!-- 마이페이지 나의 정보 221113DSC 추가 -->
+	<select id="getMyinfo" resultType="com.kosta.petner.bean.Users">
+		<![CDATA[
+		    select  *
+		    from users
+		    where id = #{id}		    
+		]]>
+	</select>
+	
+	<update id="updateMyinfo"	parameterType="com.kosta.petner.bean.Users">
+		<![CDATA[
+		    update users 
+		    set nickname = #{nickname,jdbcType=VARCHAR},
+		    		email = #{email},
+		    		zipcode = #{zipcode},
+		    		addr = #{addr},
+		    		addr_detail = #{addr_detail},
+		    		file_no = #{file_no, jdbcType=VARCHAR}
+		    where id = #{id,jdbcType=VARCHAR}
+		    
+		]]>
+	</update>
+
+
+	<select id="getMyAllInfo" parameterType="int"
+		resultType="com.kosta.petner.bean.MypageSession">
+		<![CDATA[
+		   	SELECT 	u.USER_NO, u.FILE_NO, u.FILE_NO, u.ID , u.NICKNAME, u.USER_TYPE, u.user_auth, ft.SERVER_FILENAME
+				FROM USERS u
+				LEFT JOIN FILE_TB ft ON u.FILE_NO = ft.FILE_NO 
+				WHERE u.USER_NO = #{user_no}    
+		]]>
+	</select>
+
+	<!-- 전체 users 조회 -->
+	<select id="selectAllUsers"
+		resultType="com.kosta.petner.bean.Users">
+		<![CDATA[
+			select * from users
+		]]>
+	</select>
+	
+	
+	<!-- 내 유저넘보로 등록된 펫정보나 시터정보 카운트 221122-DSC -->
+	<select id="getCount" parameterType="int" resultType="map">
+		<![CDATA[
+			SELECT a.PCNT is_mypet, b.SCNT is_sitter
+			FROM 
+			 (SELECT COUNT(*) PCNT FROM PET_INFO WHERE USER_NO = #{user_no, jdbcType=VARCHAR}) A,
+			 (SELECT COUNT(*) SCNT FROM SITTER_INFO WHERE USER_NO = #{user_no, jdbcType=VARCHAR}) B
+		]]>
+	</select>
+
+	<!-- 아이디로 회원 모든 정보 조회 2022.11.21 홍시원 추가 -->
+	<select id="inquiryOfUerById"
+		resultType="com.kosta.petner.bean.Users">
+		<![CDATA[
+			select user_no,
+				 user_type, 
+				 id, 
+				 nickname, 
+				 email, 
+				 password, 
+				 name, 
+				 joindate, 
+				 gender, 
+				 zipcode, 
+				 addr, 
+				 addr_detail, 
+				 user_level, 
+				 user_auth, 
+				 file_no
+			from users 
+			where id = #{id}
+			
+		]]>
+	</select>
+	
+	<!-- 유진: 회원 탈퇴 -->
+	<delete id="deleteUsers" parameterType="Integer">
+		<![CDATA[
+			delete from users where user_no=#{user_no}
+		]]>
+	</delete>
+	
+	<!-- 유진 타입 업데이트 -->
+	<update id="updateUserType" parameterType="com.kosta.petner.bean.Users">
+		<![CDATA[
+			update USERS set user_auth = #{user_auth , jdbcType=INTEGER}, nickname = #{nickname, jdbcType=VARCHAR}, user_level = #{user_level, jdbcType=VARCHAR} where user_no = #{user_no}
+		]]>
+	</update>
+
+</mapper>

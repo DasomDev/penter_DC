@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.chat">
+
+	
+
+	 <!-- 신규 채팅방일 때 채팅 방 생성 -->
+    <insert id="createChat" parameterType="com.kosta.petner.bean.ChatRoom">
+        insert into CHATROOM(room_id,
+        					 user_id, 
+        					 user_nickname,
+        					 user_pic,
+        					 another_id,
+        					 another_nickname,
+        					 another_pic,
+        					 unreadCount) 
+			values(seq_chatRoom_id.nextval, 
+							#{user_id},
+							#{user_nickname},
+							(SELECT file_no FROM users WHERE id = #{user_id}),
+							#{another_id},
+							#{another_nickname}, 
+							(SELECT file_no from users where id =  #{another_id}), 
+							 0)
+    </insert>
+ 
+ 	
+    <select id="selectChatRoom" parameterType="string" resultType="com.kosta.petner.bean.ChatRoom">
+        SELECT * FROM CHATROOM 
+        WHERE room_id = #{room_id} 
+    </select>
+    
+    <insert id="insertMessage" parameterType="com.kosta.petner.bean.ChatMessage">
+        <if test="sessionCount == 1">
+        INSERT INTO CHATMESSAGE (room_id, message_id, message, user_nickname, user_id, unreadCount)
+        VALUES (#{room_id}, SEQ_CHATMESSAGE_ID.NEXTVAL, #{message}, #{user_nickname}, #{user_id}, DEFAULT)
+        </if>
+        <if test="sessionCount == 2">
+        INSERT INTO CHATMESSAGE (room_id, message_id, message, user_nickname, user_id, unreadCount)
+        VALUES (#{room_id}, SEQ_CHATMESSAGE_ID.NEXTVAL, #{message}, #{user_nickname}, #{user_id}, 0)
+        </if>
+    </insert>
+    
+    <select id="messageList" parameterType="string" resultType="com.kosta.petner.bean.ChatMessage">
+		SELECT m.*, u.FILE_NO 
+		FROM CHATMESSAGE m, USERS u 
+		WHERE m.USER_ID = u.ID 
+		AND m.room_id = #{room_id}
+    </select>
+    
+    <select id="searchChatRoom" parameterType="com.kosta.petner.bean.ChatRoom" resultType="com.kosta.petner.bean.ChatRoom">
+        SELECT * FROM CHATROOM
+        WHERE user_id = #{user_id} AND another_id = #{another_id}
+        or user_id = #{another_id} and another_id = #{user_id}
+    </select>
+    
+    <select id="chatRoomList" parameterType="string" resultType="com.kosta.petner.bean.ChatRoom">
+        SELECT * FROM CHATROOM
+        WHERE user_id = #{user_id} OR another_id = #{user_id}
+        order by room_id desc
+    </select>
+    
+    <select id="selectUnReadCount" parameterType="com.kosta.petner.bean.ChatMessage" resultType="int">
+        SELECT COUNT(*) FROM CHATMESSAGE
+        WHERE room_id = #{room_id} AND user_id != #{user_id} AND UNREADCOUNT = 1
+    </select>
+    
+    <update id="updateCount" parameterType="com.kosta.petner.bean.ChatMessage">
+        UPDATE CHATMESSAGE
+        SET UNREADCOUNT = 0
+        WHERE room_id = #{room_id} AND user_id != #{user_id} AND UNREADCOUNT = 1
+    </update>
+    
+    <delete id="deleteRoom" parameterType="String">
+  	<![CDATA[
+  	{CALL DECLARE BEGIN
+	   DELETE FROM CHATROOM  WHERE room_id = #{room_id};
+	   DELETE FROM CHATMESSAGE WHERE room_id = #{room_id};
+      END}
+      ]]>
+    </delete>
+    
+</mapper>
+

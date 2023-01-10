@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+ /* Form Component Config :: START */
+  /* fomr component checkbox / radio / text / default */
+  :root{
+    --fcc-font01: #666;
+    --fcc-bg01: #fff;
+    --fcc-focus: #839DFA;
+    --fcc-focus: var(--brown);
+    --fcc-checked: #6f71f2;
+    --fcc-checked: var(--brown);
+    --fcc-border: #E1E3E6;
+  }
+
+  form{max-width:800px;}
+  .fc_title{font-size: 1.6rem; padding-bottom: 8px; color: var(--brown);}
+  
+  /* Form Component Config :: END */
+
+  /* padding, margin -> common*/
+  .pb15{padding-bottom:15px;}
+
+  /* title */
+
+  /* input[type=text], input[type=password] */
+  input[type=text], 
+  input[type=password],
+  input[type=number]{
+    border:1px solid var(--fcc-border);
+    margin: 0;
+    padding: 0 10px;
+    min-width: 200px;
+    height: 38px;
+    color: var(--brown);
+    font-size: 1.4rem;
+    background-color: var(--fcc-bg01);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    text-indent: 1rem;
+    box-sizing: border-box;
+  }
+
+  input[type=text]:focus, 
+  input[type=password]:focus,
+  input[type=number]:focus{
+    border-color:var(--fcc-focus);
+    outline: 4px solid #f8dbc8;
+  }
+
+  input[type=text]::placeholder,
+  input[type=password]::placeholder{color:#ddd;}
+
+  /* form component checkbox , radio */
+  label.fcCbox1{margin-right:15px;}
+  
+  label.fcCbox1 span,
+  label.fcRadio1 span{color:var(--brown)}
+  label.fcCbox1 > input[type=checkbox],
+  label.fcRadio1 > input{visibility: hidden; position: absolute; left: -10px;} 
+  label.fcCbox1 > span:before{content: "\f0c8"; margin-right: 6px; font-family: "Font Awesome 5 Free";}
+  label.fcCbox1 > input[type=checkbox]:checked + span:before{content: "\f14a";  color: var(--fcc-checked)}
+
+  label.fcRadio1 >  input[type=radio]:checked + span{background-color: var(--brown); color:#fff;}
+
+   /* radio */
+   label.fcRadio1 span{
+    margin: 0;
+    padding: 0 20px 0 20px;
+    height: 38px;
+    color: var(--brown);
+    text-align: center;
+    background-color:#F8F9FA;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* select */
+  .fcc_select{
+    border:1px solid var(--fcc-border);
+    margin: 0;
+    padding: 0 10px;
+    min-width: 200px;
+    height: 38px;
+    color: var(--brown);
+    font-size: 1.4rem;
+    background-color: var(--fcc-bg01);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .fcc_select:focus{
+    border-color:var(--fcc-focus);
+    outline: 4px solid #f8dbc8;
+  }
+
+  /* textarea */
+  .fcc_textarea{
+    border:1px solid var(--fcc-border); 
+    resize: none; 
+    min-height: 220px;
+    min-width: 400px;
+    border-radius: 5px;
+    outline:none;
+    padding:20px;
+    color: var(--brown);
+    font-family: noto-sans;
+    font-size: 1.6rem;
+  }
+  .fcc_textarea:focus{
+    border-color: var(--fcc-focus);
+    outline: 4px solid #f8dbc8;
+    color: var(--brown);
+    font-family: noto-sans;
+    font-size: 1.6rem;
+  }

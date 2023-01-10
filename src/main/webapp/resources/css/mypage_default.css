@@ -1,0 +1,145 @@
+  /* MYPAGE DEFAULT LAYOUT CSS  */
+  /* SIDEMENU, LAYOUT, TOP PROFILE */
+
+
+  .mypage_wr .my_profile{border-bottom: 1px solid #ddd; padding:30px 0 40px; }
+  .mypage_wr .my_profile > div{display:flex; justify-content: center; align-items: center;}
+  .mypage_wr .my_profile .prof_img{width:82px; height:82px; border-radius: 50%; overflow: hidden; margin-right:30px;}
+  .mypage_wr .my_profile .prof_img img{width:100%;; height:100%}
+
+  /* row1 아이디 / 수정 */
+  .mypage_wr .my_profile .prof_text{width:350px;}
+  .mypage_wr .my_profile .prof_text .row1 {display:flex; justify-content:space-between; padding-bottom:20px;}
+  .mypage_wr .my_profile .prof_text .row1 p:nth-child(1){font-size:2.2rem; font-weight:800;}
+
+  /* 팔로잉 뱃지 */
+  .mypage_wr .my_profile .prof_text .row2{display:flex; }
+  .mypage_wr .my_profile .prof_text .row2 > p{margin-right:14px; font-size:1.3rem}
+  .mypage_wr .my_profile .prof_text .row2 .f_val{padding-left: 4px;;}
+  .mypage_wr .my_profile .badge{
+    background-color: #e3daff;
+    color: #9386bb;
+    padding: 4px 6px;
+    border-radius: 5px;
+    cursor: default;
+    font-size: 1.2rem;
+    font-family: sans-serif;
+  }
+
+  /* 사이드메뉴 / 뷰단 */
+  .my_view{display:flex;}
+  .my_view .side_menu{
+    width: 250px;
+    background-color: #f8f8f8;
+    padding: 30px 20px;
+    margin-right: 85px;
+    /* border-radius: 0 10px 10px 0; */
+  } 
+  .my_view .side_menu li{margin-bottom:50px; color:#757D8A;}
+  .my_view .side_menu li .first_menu{border-bottom:1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;}
+  .my_view .side_menu li .second_menu{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.4rem;
+    text-indent: 12px;
+  }
+  .my_view .side_menu li .second_menu a{font-weight: 300; color:#757D8A}
+  .my_view .side_menu li .second_menu a:not(:last-child){padding-bottom:15px;}
+  .my_view .side_menu li .second_menu a:hover{font-weight: 400; text-decoration: underline;}
+
+  .my_view .cont_view{width: 100%; padding-top:30px;}
+  
+  /* 마이페이지 cont_view  */
+  .cont_view{padding:100px 0}
+  .cont_view .menu_title{
+    padding-bottom: 38px;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    font-weight: 800;
+  }
+  .cont_view .menu_title a{margin-left:40px; color:#888}
+  .cont_view .data .key{display:inline-block; min-width: 140px; padding-bottom:20px}
+  
+  /* 채팅창 */
+   #talk_view{}
+   #talk_view .talk_list{
+     margin: 0 auto;
+     padding: 0 10px;
+     height: 500px;
+     overflow-y: scroll;
+     overflow-x: hidden;
+   }
+  
+   #talk_view .talk_list .cont{
+     max-width: 400px;
+     padding: 15px;
+     border-radius: 15px 15px 0 15px;
+     display: inline-block;
+     word-wrap: break-word;
+     line-height: 2.4rem;
+     border: 2px solid #ddd;
+     
+   }
+   #talk_view .talk_list .datetime{font-size: 1.2rem; margin-right: 6px; color:#b8b8b8}
+   #talk_view .talk_list .you .datetime{margin:0; margin-left:6px}
+   
+   #talk_view .talk_list .me { display: flex; justify-content: end; align-items:flex-end; margin-bottom:25px;}
+   #talk_view .talk_list .me:nth-of-type(1){margin-top: 15px;}
+ 
+   #talk_view .talk_list .you{
+     margin-bottom: 25px;
+     display: flex;
+     flex-direction: row-reverse;
+     align-items: flex-end;
+     justify-content: flex-end;
+   }
+   #talk_view .talk_list .you .cont{
+     border-radius: 15px 15px 15px 0;
+     border: 2px solid #F9B25C;
+   }
+   #talk_view .type_here{
+     margin: 0 auto;
+     padding: 30px 10px;
+     display: flex;
+     flex-direction: column;
+     align-items: flex-end;
+     
+   }
+ 
+   #talk_view .type_here .input{
+     width: 100%;
+     height: 90px;
+     background-color: #fff;
+     border-radius: 15px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     border: 2px solid #ddd;
+     overflow: hidden;
+   }
+   #talk_view .type_here .input input{ width: 80%; height: 100%; border:none; text-indent:35px}
+ 
+   #talk_view .send_icon{
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 15%;
+     height: 100%;
+     font-size: 16px;
+     text-indent: -4px;
+     background: #bdbdbd;
+     color: #fff;
+     cursor: pointer;
+   }
+
+   #talk_view .photo_btn{
+     margin-bottom: 6px;
+     display: inline-flex;
+     align-items: center;
+     margin-right:7px;
+   }
+
+   #talk_view ::-webkit-scrollbar{background-color:#fff;}
+   #talk_view ::-webkit-scrollbar-thumb{background-color: #F9B25C; border-radius: 15px; width:10px;}
+   ::-webkit-scrollbar-track{}

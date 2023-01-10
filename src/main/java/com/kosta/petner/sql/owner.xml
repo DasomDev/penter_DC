@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.owner">
+	
+	<insert id="regist" parameterType="com.kosta.petner.bean.PetInfo">
+		insert into pet_info(pet_no
+							,user_no
+							,file_no
+							,pet_kind
+							,pet_specie
+							,pet_name
+							,pet_age
+							,pet_weight
+							,pet_gender
+							,pet_neutral
+							,pet_info
+		) values(pet_no_seq.nextval 
+				,#{user_no, jdbcType=INTEGER}
+				,#{file_no, jdbcType=INTEGER}
+				,#{pet_kind, jdbcType=VARCHAR}
+				,#{pet_specie, jdbcType=VARCHAR}
+				,#{pet_name, jdbcType=VARCHAR}
+				,#{pet_age, jdbcType=INTEGER}
+				,#{pet_weight, jdbcType=INTEGER}
+				,#{pet_gender, jdbcType=VARCHAR}
+				,#{pet_neutral, jdbcType=VARCHAR}
+				,#{pet_info, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 221115_DSC  추후삭제하기 -->
+	<select id="getPetInfo" parameterType="int" resultType="com.kosta.petner.bean.PetInfo">
+		<![CDATA[
+			SELECT * FROM PET_INFO
+			WHERE USER_NO = #{user_no}
+			ORDER BY PET_NO DESC
+		]]> 
+	</select>
+	
+	<!-- 메인=> 펫시터찾기 일가능한시터정보보 모두 가져오기 221130_DSC-->
+	<select id="getAllAvailSitter" resultType="Map">
+		<![CDATA[
+			SELECT u.NAME, u.NICKNAME, u.ID, si.* 
+			FROM SITTER_INFO si, USERS u 
+			WHERE si.USER_NO = u.USER_NO
+			ORDER BY u.USER_NO DESC 
+		]]> 
+	</select>
+	
+	<!-- 펫정보 유저넘버 && 펫넘버 둘다 조건 달아서 URL get으로 무작위로 들어가는 것 막음 221130 DSC -->
+	<select id="getMyPetByPetNo" parameterType="Map" resultType="com.kosta.petner.bean.PetInfo">
+		<![CDATA[
+			SELECT * FROM PET_INFO
+			WHERE USER_NO = #{user_no} AND PET_NO = #{pet_no}
+		]]> 
+	</select>
+	
+	<update id="updateMyPetInfo" parameterType="com.kosta.petner.bean.PetInfo">
+		<![CDATA[
+	    UPDATE PET_INFO
+		  SET 
+		  PET_NEUTRAL = #{pet_neutral, jdbcType=VARCHAR},
+			PET_INFO = #{pet_info, jdbcType=VARCHAR}	
+	    WHERE USER_NO = #{user_no} AND PET_NO = #{pet_no}
+		]]> 
+	</update>
+	
+	<delete id="deletePet" parameterType="int">
+		<![CDATA[
+			DELETE FROM PET_INFO WHERE PET_NO = #{pet_no}
+		]]>
+	</delete>
+	
+	<!-- select * from pet_info where user_no = #{user_no} -->
+	<select id= "getPetByUserNo" parameterType = "Integer" resultType= "com.kosta.petner.bean.PetInfo" >
+	<![CDATA[		
+		SELECT pet.*, ft.SERVER_FILENAME 
+		FROM PET_INFO pet 
+		LEFT JOIN FILE_TB ft ON pet.FILE_NO = ft.FILE_NO 
+		WHERE pet.USER_NO = #{user_no}
+	]]>	
+	</select>
+	
+	<select id= "getPetByPetNo" parameterType = "Integer" resultType= "com.kosta.petner.bean.PetInfo" >
+	<![CDATA[
+		select * from pet_info where pet_no = #{pet_no}
+	]]>	
+	</select>
+	
+	<select id= "getFileByPetNo" parameterType = "Integer" resultType= "String" >
+	<![CDATA[
+		SELECT SERVER_FILENAME
+		FROM FILE_TB ft, PET_INFO pi
+		WHERE pi.pet_no = #{pet_no} and ft.FILE_NO  = pi.file_no
+	]]>	
+	</select>
+	
+	<insert id="insertRequireServiceFrom" parameterType="com.kosta.petner.bean.CareService">
+	<![CDATA[
+		insert into care_service(
+			 service_no
+			,user_no
+			,pet_no
+			,zipcode
+			,addr
+			,addr_detail
+			,service
+			,st_date
+			,end_date
+			,request_money
+			,request_title
+			,request_detail
+			,status
+			,reg_date
+			,file_no
+		)values(
+			 service_no_seq.nextval
+			,#{user_no, jdbcType=INTEGER}
+			,#{pet_no, jdbcType=INTEGER}
+			,#{zipcode}
+			,#{addr, jdbcType=VARCHAR}
+			,#{addr_detail, jdbcType=VARCHAR}
+			,#{service, jdbcType=VARCHAR}
+			,#{st_date}
+			,#{end_date}
+			,#{request_money, jdbcType=INTEGER}
+			,#{request_title, jdbcType=VARCHAR}
+			,#{request_detail, jdbcType=VARCHAR}
+			,#{status, jdbcType=VARCHAR}
+			,sysdate
+			,#{file_no, jdbcType=INTEGER}
+		)
+	]]>	
+	</insert>
+	
+	<select id="getServiceList" resultType="com.kosta.petner.bean.CareService" parameterType="Map">
+	<![CDATA[
+		select  service_no
+				,user_no
+				,pet_no
+				,zipcode
+				,addr
+				,addr_detail
+				,service
+				,st_date
+				,end_date
+				,request_money
+				,request_title
+				,request_detail
+				,status
+				,TO_CHAR(reg_date,'YYYY/MM/DD') reg_date
+		from (
+			select row_number() over (order BY service_no desc) num, B.*
+			from care_service B
+			WHERE user_no = #{user_no}
+			order by service_no desc
+			)
+		where num between #{row} and #{row}+9
+		]]>
+	</select>
+	
+	<!-- user_no가 조건으로 들어가는 게시글 수 -->
+	<select id="csListCount" parameterType="Integer" resultType="Integer">
+	<![CDATA[
+		select count(*)
+		from care_service
+		where user_no = #{user_no}
+	]]>	
+	</select>
+	
+	<!-- care_service의 전체 게시글 수 -->
+	<select id="csListAllCount" resultType="Integer">
+	<![CDATA[
+		select count(*)
+		from care_service
+	]]>	
+	</select>
+	
+	<!-- 펫시터 찾기 검색 -->
+	<select id="findSitterSearch" parameterType="hashMap" resultType="hashMap">
+			SELECT si.*, u.gender, u.nickname, u.id
+			FROM SITTER_INFO si
+			inner join users u on si.user_no = u.user_no
+			<where>
+				<!-- 우편번호 -->
+			    <if test="zipcode != null and zipcode != ''">
+			    <![CDATA[
+			    	si.zipcode LIKE #{zipcode}||'%'
+			    ]]>	
+			    </if>
+			    <!-- 보호자 성별 -->
+			    <if test="genderArray != null and genderArray != ''">
+			    	<foreach item="item" index="index" collection="genderArray" separator="or" open="and">
+						u.gender LIKE '%'||#{item}||'%'
+					</foreach>
+			    </if>
+			    <!-- 서비스 -->
+			    <if test="serviceArray != null and serviceArray != ''">
+			    	<foreach item="item" index="index" collection="serviceArray" separator="and" open="and">
+						service LIKE '%'||#{item}||'%'
+					</foreach>
+			    </if>
+			    <!-- 동물종류 -->
+			    <if test="petKindArray != null and petKindArray != ''">
+			    	<foreach item="item" index="index" collection="petKindArray" separator="and" open="and">
+						pet_kind LIKE '%'||#{item}||'%'
+					</foreach>
+			    </if>
+			   <!-- 요일 -->
+			    <if test="dayArray != null and dayArray != ''">
+			    	<foreach item="item" index="index" collection="dayArray" separator="and" open="and">
+						work_day LIKE '%'||#{item}||'%'
+					</foreach>
+			    </if>
+			</where>
+	</select>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.file">
+	
+	<insert id="insertFile" parameterType="com.kosta.petner.bean.FileVO">
+	<![CDATA[
+		insert into file_tb( file_no
+							,user_no
+							,board_no
+							,origin_filename
+							,server_filename
+		) values(file_no_seq.nextval
+				,#{user_no, jdbcType=INTEGER}
+				,#{board_no, jdbcType=INTEGER}
+				,#{origin_filename, jdbcType=VARCHAR}
+				,#{server_filename, jdbcType=VARCHAR}
+		)
+	]]>
+	</insert>
+	
+	<!-- server_filename에 맞는 file_no값 가져오기 -->
+	<select id="getFileNo" parameterType="String" resultType="Integer">
+	<![CDATA[
+		select	file_no
+		from 	file_tb
+		where 	server_filename = #{server_filename}
+	]]>
+	</select>
+	
+	<!-- file_no에 맞는 server_filename 가져오기 -->
+	<select id="getServerFilename" parameterType="Integer" resultType="String">
+	<![CDATA[
+		select	server_filename
+		from 	file_tb
+		where 	file_no = #{file_no}
+	]]>
+	</select>
+	
+	<!-- 프로필이미지 사진 수정  -->
+	<update id ="updateFileInfoByFileNo" parameterType="com.kosta.petner.bean.FileVO">
+		<![CDATA[
+			UPDATE FILE_TB
+		  SET 
+		  ORIGIN_FILENAME = #{origin_filename, jdbcType=VARCHAR},
+		  SERVER_FILENAME = #{server_filename, jdbcType=VARCHAR}
+		  WHERE FILE_NO = #{file_no}
+	]]>
+	</update>
+	
+</mapper>

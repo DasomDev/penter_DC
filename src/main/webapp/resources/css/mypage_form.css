@@ -1,0 +1,154 @@
+  /*--------------- SITTER FORM / PET FORM CSS ---------------*/
+  .mypage_form{text-align: center; width:460px; margin:0 auto 40px;}
+  .mypage_form .f_row{margin-bottom:32px;}
+  .mypage_form .fc_title{padding-bottom:15px !important}
+  .mypage_form select{min-width: 442px;;}
+  .mypage_form .select_all{font-weight: 300; font-size:1.4rem;}
+  .mypage_form .days span{padding:0 15px !important}
+  
+  .profile_upload{padding-top:20px;}
+  .profile_upload .prof_img{position: relative; margin:0 auto; width:150px;}
+  .profile_upload .img{
+    width:130px; 
+    height:130px; 
+    margin:0 auto;
+    background-color:pink; 
+    border-radius: 50%; 
+    overflow: hidden;
+  }
+  .profile_upload img{width:100%;}
+  .profile_upload .edit_btn{
+    width: 40px;
+    height: 40px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right:6px; bottom:4px;
+  }
+  
+  .profile_upload_square .img{
+    width:130px; 
+    height:130px; 
+    margin:0 auto;
+    overflow: hidden;
+  }
+  
+  .profile_upload_square img{width:100%;  height:100%;}
+  .profile_upload_square .prof_img{
+  	position: relative;
+  	margin:0 auto;
+  	width:100%;
+  	height: 200px;
+  }
+  .profile_upload_square .edit_btn{
+    width: 40px;
+    height: 40px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right:6px; bottom:4px;
+  }
+ /*--------------- REQUIRESERVICE CSS ---------------*/
+	.profile_upload_small{
+		padding-top:20px;
+	    display: flex;
+	    flex-wrap: nowrap;
+	    justify-content: space-evenly;
+	}
+
+	.profile_upload_small .prof_img_small{position: relative; margin:0 auto; width:100px;}
+	.profile_upload_small .img{
+	  width:60px; 
+	  height:60px; 
+	  margin:0 auto;
+	  background-color:#fefbc0; 
+	  border-radius: 50%; 
+	  overflow: hidden;
+	
+	}
+	.profile_upload_small img{width:100%;}
+	  
+	.profile_upload_small .check_btn{
+	    width: 20px;
+	    height: 20px;
+	    background: var(--orange);
+	    border-radius: 50%;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    position: absolute;
+	    right:14px; bottom:4px;
+	 }
+	 
+	 .card_list_type {
+		padding:28px;
+		border-radius: 5px;
+		box-shadow: 1px 1px 5px 2px rgba(222,222,222,0.75);
+		-webkit-box-shadow: 1px 1px 5px 2px rgba(222,222,222,0.75);
+		-moz-box-shadow: 1px 1px 5px 2px rgba(222,222,222,0.75);
+	}
+	 
+	.card_list_type table{
+		display:table;
+		align-items: center;
+		border-collapse: separate;
+  		border-spacing: 0 10px;
+	}
+	
+	.card_list_type table .img_area{
+		width:110px; height:110px; border-radius: 50%; overflow: hidden;
+		margin: 0 auto;
+	}
+	.card_list_type table img{width:100%; height:100%}
+	.card_list_type table .tr-left{text-align: left; }
+	.card_list_type table .td-inner{
+		display: table-cell;
+		width: 100%;
+	}
+	
+	.card_list_type input{
+		border:0 solid black;
+	}
+	
+	.card_list_type input:focus{
+		outline: none;
+		cursor: default;
+	}
+	
+	.card_list_type input:hover{
+		cursor: default;
+	}
+	
+	.pdr40{padding-right: 40px; wid}
+	.p-style{
+		text-align: left;
+		border-top: 2px solid var(--fcc-font02);
+		border-color: rgb(222 222 222 / 75%);
+		padding-top: 20px;
+	}
+	
+	.p-style-content{
+		text-align: left;
+		padding-top: 20px;
+		font-size: 14px;
+	}
+	
+	#rep{
+		cursor:pointer;
+	}
+	
+	#textareaId{
+		width: 90%;
+		word-break:break-all;
+		height: 200px;
+		resize:none;
+		border: none;
+		cursor: default;
+		outline: none;
+	}

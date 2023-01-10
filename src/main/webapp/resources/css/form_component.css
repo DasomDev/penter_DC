@@ -1,0 +1,238 @@
+  /* Form Component Config */
+  /* fomr component checkbox / radio / text / default */
+  :root{
+    --fcc-font01: #666;
+    --fcc-font02: #545863;
+    --fcc-bg01: #fff;
+
+    /* --fcc-focus: #839DFA; */
+    --fcc-focus: #b67249;
+    --fcc-focus-outline: #fadbc7;    
+    --fcc-checked: #eb9663;
+    --fcc-border: #E1E3E6;
+  }
+
+  form{max-width:800px; margin-bottom: 40px;}
+  h3.form_title{
+    text-align: center;
+    color: var(--fcc-font02);
+    font-size: 2.4rem;
+    font-weight: 600;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--fcc-font02);
+  }
+
+  .fc_title{
+    font-size: 1.6rem; 
+    padding-bottom: 10px; 
+    margin-top:10px;
+    color: var(--fcc-font02);}
+  
+  /* form > div f_row*/
+  .f_row{padding-bottom:28px;}
+  
+
+
+  /* input[type=text], input[type=password] */
+  input:autofill {background-color:#fff; }
+  input:-webkit-autofill {background-color:#fff;}
+  input[type=text], 
+  input[type=password],
+  input[type=number]{
+    border:1px solid var(--fcc-border);
+    margin: 0;
+    padding: 0 10px;
+    min-width: 260px;
+    height: 38px;
+    color: var(--fcc-font01);
+    font-size: 1.4rem;
+    background-color: var(--fcc-bg01);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    text-indent: 1rem;
+    box-sizing: border-box;
+  }
+
+  input[type=text]:focus, 
+  input[type=password]:focus,
+  input[type=number]:focus{
+    border-color:var(--fcc-focus);
+    outline: 4px solid var(--fcc-focus-outline);
+  }
+
+  input[type=text]::placeholder,
+  input[type=password]::placeholder,
+  input[type=number]::placeholder{color:#ddd;}
+  input:disabled{background-color: #f9f9f9;}
+
+  /* form component checkbox + radio */
+  label.fcCbox1{margin-right:15px;}
+  label.fcCbox1 span,
+  label.fcCbox2 span,
+  label.fcRadio1 span{color:var(--fcc-font02)}
+
+  /* radio */
+  label.fcRadio1 span,
+  label.fcCbox2 span{
+    margin: 0;
+    padding: 0 20px 0 20px;
+    width: 320px;
+    height: 38px;
+    color: var(--fcc-font02);
+    text-align: center;
+    background-color:#F8F9FA;
+    border-radius: 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  label.fcCbox1 > input[type=checkbox],
+  label.fcCbox2 > input[type=checkbox],
+  label.fcRadio1 > input[type=radio]{visibility: hidden; position: absolute; left: -10px;} 
+  label.fcRadio1 > span{transition: all 0.2s; font-size:1.4rem;}
+
+  label.fcCbox1 > span:before{content: "\f0c8"; margin-right: 6px; font-family: "Font Awesome 5 Free";}
+  label.fcCbox1 > input[type=checkbox]:checked + span:before{content: "\f14a";  color: var(--fcc-checked)}  
+  label.fcRadio1 >  input[type=radio]:checked + span,
+  label.fcCbox2 > input[type=checkbox]:checked + span{background-color:var(--fcc-checked); color:#fff;}
+  label.fcCbox2 span{padding:0 10px;}
+  
+  
+
+  /* form component select*/
+  .fcc_select select option {
+    padding:6px 0;
+    font-size: 16px;
+  }
+  .fcc_select{
+    border:1px solid var(--fcc-border);
+    margin: 0;
+    padding: 0 10px;
+    min-width: 200px;
+    height: 38px;
+    color: var(--fcc-font01);
+    font-size: 1.4rem;
+    background-color: var(--fcc-bg01);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-sizing: border-box;
+  }
+  .fcc_select:focus{
+    border-color:var(--fcc-focus);
+    outline: 4px solid var(--fcc-focus-outline);
+  }
+
+  /* textarea */
+  .fcc_textarea{
+    border:1px solid var(--fcc-border); 
+    resize: none; 
+    width:100%;
+    min-height: 220px;
+    /* min-width: 400px; */
+    border-radius: 5px;
+    outline:none;
+    padding:20px;
+    color: var(--fcc-font01);
+    font-family: noto-sans;
+    font-size: 1.6rem;
+    box-sizing: border-box;
+  }
+  .fcc_textarea:focus{
+    border-color: var(--fcc-focus);
+    outline: 4px solid var(--fcc-focus-outline);
+    color: var(--fcc-font01);
+    font-family: noto-sans;
+    font-size:
+     1.6rem;
+  }
+  
+  /* 기본검색창 */
+  .search_form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--fcc-border);
+    padding: 15px 0;
+  }
+  .search_form form{
+    margin-bottom: 0;
+    border: 1px solid var(--fcc-border);
+    border-radius: 5px;
+    width: 500px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+  }
+  .search_form form input[type=text]{
+    border: 0;
+    width: 90%;
+    height:45px;
+    text-indent: 0;
+  }
+  .search_form form input[type=text]:focus{border:0; outline:0;}
+  .search_form .search_submit{cursor:pointer}
+
+  /* 찾기 필터 피드 */
+  .filter_feed{
+	padding: 20px 0;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--fcc-border);
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .filter_feed label{cursor:pointer}
+  .filter_feed .f_row{
+    padding-bottom: 5px;
+    display: flex;
+    margin-right: 24px;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 10px;
+  }
+  .filter_feed .filter_title{
+    border: 1px solid var(--font);
+    display: inline;
+    padding: 8px;
+    border-radius: 5px;
+    /* border: 1px solid var(--navy); */
+    cursor: pointer;
+    margin-right: 10px;
+    width: fit-content;
+
+  }
+  .select_box{    
+    display: inline-block;
+    width:max-content;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    /* display:none; */
+    /* position:absolute;
+    top:26px;
+    left:0; */
+    /* box-shadow: 1px 1px 5px 2px rgb(222 222 222 / 75%);
+    -webkit-box-shadow: 1px 1px 5px 2px rgb(222 222 222 / 75%);
+    -moz-box-shadow: 1px 1px 5px 2px rgba(222,222,222,0.75); */
+
+  }
+  input[type=text].date-picker{
+    height: 38px;
+    min-width: inherit;
+    width: 100px;
+    text-indent: 0;
+  }
+
+ 
+
+  

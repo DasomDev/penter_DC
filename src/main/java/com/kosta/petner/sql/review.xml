@@ -1,0 +1,49 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.review">
+	<resultMap type="com.kosta.petner.bean.Review" id="ReviewResultMap">
+		<id property="reviewNo" column="review_no"/>
+		<id property="reviewActiveUser" column="review_active_user" />
+		<id property="reviewPassiveUser" column="review_passive_user"/>
+		<id property="title" column="title"/>
+		<id property="content" column="content"/>
+		<id property="rating" column="rating"/>
+		<id property="reviewDate" column="review_date"/>
+		
+		
+		<id property="reviewActiveUserId" column="review_active_user_id"/>
+		<id property="reviewPassiveUserId" column="review_passive_user_id"/>
+		
+		<id property="profileName" column="profile_name"/>
+	</resultMap>
+	
+	<resultMap type="com.kosta.petner.bean.Users" id="UsersResultMap">
+		<id property="user_no" column="user_no"/>
+		<id property="user_type" column="user_type"/>
+		<id property="id" column="id"/>
+		<id property="nickname" column="nickname"/>
+		<id property="email" column="email"/>
+		<id property="password" column="password"/>
+		<id property="name" column="name"/>
+		<id property="joindate" column="joindate"/>
+		<id property="gender" column="gender"/>
+		<id property="zipcode" column="zipcode"/>
+		<id property="addr" column="addr"/>
+		<id property="addr_detail" column="user_level"/>
+		<id property="user_level" column="user_level"/>
+		<id property="user_auth" column="user_auth"/>
+		<id property="file_no" column="file_no"/>
+	</resultMap>
+	
+	<select id="selectBoardList"
+		resultType="com.kosta.petner.bean.Review" parameterType="Integer">
+		<![CDATA[
+			select reviewNo, reviewActiveUser, reviewPassiveUser, title, content, rating, reviewDate,
+				reviewActiveUserId, reviewPassiveUserId, profileName
+			from (select row_number() over (order by board_re_ref desc, board_re_seq asc) num, B.*
+				from board B order by board_re_ref desc, board_re_seq asc)
+			where num between #{row} and #{row}+9
+		]]>
+	</select>
+	
+</mapper>

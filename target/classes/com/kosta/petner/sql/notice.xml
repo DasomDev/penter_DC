@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.notice">
+	<sql id="search_where">
+		<if test="search == 'title' or search == 'content'">
+			WHERE ${search } LIKE '%' || #{keyword } || '%'
+		</if>
+		<if test="search == 'writer'">
+			WHERE <include refid="search_writer" />
+		</if>
+		<if test="search == 'all'">
+			WHERE title LIKE '%' || #{keyword } || '%'
+			OR content LIKE '%' || #{keyword } || '%'
+			OR <include refid="search_writer" />
+		</if>
+	</sql>
+	
+	<sql id="search_writer">
+		writer IN (SELECT id FROM users WHERE name LIKE '%' || #{keyword } || '%')
+	</sql>
+	
+	<select id="list" resultType="com.kosta.petner.bean.Notice">
+		SELECT * 
+		FROM (SELECT ROWNUM no, n.*, (SELECT name FROM users WHERE users.id = writer) name
+				FROM (SELECT * FROM notice <include refid="search_where" /> ORDER BY root, step DESC) n
+				ORDER BY no DESC) n 
+		WHERE no BETWEEN #{beginList} and #{endList}				
+		
+	</select>
+
+	<select id="totalList" resultType="integer">
+		SELECT COUNT(*) FROM notice <include refid="search_where" />
+	</select>
+	
+	<insert id="insert">	
+		INSERT INTO notice (id, root, title, content, writer,file_no, filename, filepath)
+		VALUES (seq_notice.nextval, seq_notice.currval, #{title }, #{content }, #{writer }, #{file_no, jdbcType=VARCHAR }, #{filename, jdbcType=VARCHAR }, #{filepath, jdbcType=VARCHAR }) 
+	</insert>
+	
+	<select id="detail" resultType="com.kosta.petner.bean.Notice">
+		SELECT n.*, (SELECT name FROM users u WHERE u.id = n.writer) name FROM notice n WHERE id=#{id }
+	</select>
+	<!-- jdbcType=VARCHAR 속성을 넣으면 null값이 허용된다. -->
+	
+	<update id="read">
+		UPDATE notice SET readcnt = readcnt + 1 WHERE id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM notice WHERE id=#{id }
+	</delete>
+	
+	<update id="update">
+		UPDATE notice set title = #{title }, content = #{content },file_no = #{file_no, jdbcType=VARCHAR }, filename = #{filename, jdbcType=VARCHAR }, filepath = #{filepath, jdbcType=VARCHAR }
+		WHERE id=#{id }
+	</update>
+	
+	<insert id="reply_insert">
+		<!-- 원글의 step보다 더 큰 step을 가진 글이 있다면 그 글들의 step을 먼저 +1 한다. -->
+		<![CDATA[
+			{CALL DECLARE BEGIN
+				UPDATE notice SET step = step + 1
+				WHERE root = #{root } AND step > #{step };
+				
+				INSERT INTO notice (id, root, title, content , writer, step, indent,file_no, filename, filepath)
+				VALUES (seq_notice.NEXTVAL, #{root }, #{title }, #{content }, #{writer }, #{step } + 1, #{indent } + 1,#{file_no, jdbcType=VARCHAR }, #{filename, jdbcType=VARCHAR }, #{filepath, jdbcType=VARCHAR });
+			END}
+		]]>
+	</insert>
+	
+	<!-- 공지사항 다중삭제 2022.12.21 김혜경 -->
+	<delete id="delNotice">
+		DELETE FROM notice WHERE id IN
+		<foreach item="item" index="index" collection="noArr" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      

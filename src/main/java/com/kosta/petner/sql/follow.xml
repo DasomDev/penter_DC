@@ -1,0 +1,79 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.follow">
+	<resultMap type="com.kosta.petner.bean.Follow" id="FollowResultMap">
+		<id property="followNo" column="follow_no"/>
+		<id property="activeUser" column="active_user"/>
+		<id property="passiveUser" column="passive_user"/>
+		<id property="regDate" column="reg_date"/>
+		
+		<id property="activeUserId" column="active_user_id"/>
+		<id property="passiveUserId" column="passive_user_id"/>
+		
+		<id property="profileName" column="profile_name"/>
+	</resultMap>
+	
+	<resultMap type="com.kosta.petner.bean.Users" id="UsersResultMap">
+		<id property="user_no" column="user_no"/>
+		<id property="user_type" column="user_type"/>
+		<id property="id" column="id"/>
+		<id property="nickname" column="nickname"/>
+		<id property="email" column="email"/>
+		<id property="password" column="password"/>
+		<id property="name" column="name"/>
+		<id property="joindate" column="joindate"/>
+		<id property="gender" column="gender"/>
+		<id property="zipcode" column="zipcode"/>
+		<id property="addr" column="addr"/>
+		<id property="addr_detail" column="user_level"/>
+		<id property="user_level" column="user_level"/>
+		<id property="user_auth" column="user_auth"/>
+		<id property="file_no" column="file_no"/>
+	</resultMap>
+	
+	<!-- 팔로우 기능 -->
+	<insert id="follow">
+		insert into follow(follow_no, active_user, passive_user) values(followno_seq.nextval, #{activeUser}, #{passiveUser})
+	</insert>
+	
+	<!-- 언팔로우 기능 -->
+ 	<delete id="unfollow">
+ 		delete from follow where active_user=#{activeUser} and passive_user=#{passiveUser}
+ 	</delete>
+ 	
+ 	<!-- 팔로우 유무 조회 기능 -->
+ 	<select id="isFollow" resultType="int">
+ 		select count(*) from follow where active_user=#{activeUser} and passive_user=#{passiveUser}
+ 	</select>
+ 	
+ 	<!-- 팔로우 리스트 조회 -->
+ 	<select id="selectActiveUserList" resultMap="FollowResultMap">
+ 		select active_user,
+				passive_user,
+				F.reg_date as reg_date,
+				U.id as passive_user_id,
+				U.nickname as profile_name
+		from follow F, Users U
+		WHERE F.PASSIVE_USER = U.USER_NO 
+		AND active_user=#{activeUser}
+		ORDER BY reg_date desc;
+ 	</select>
+ 	
+ 	<!-- 팔로우 리스트 조회 -->
+ 	<select id="selectPassiveUserList" resultMap="FollowResultMap">
+ 		select active_user,
+				passive_user,
+				F.reg_date as reg_date,
+				U.id as passive_user_id,
+				U.nickname as profile_name
+		from follow F, Users U
+		WHERE F.PASSIVE_USER = U.USER_NO 
+		AND passive_user = #{passiveUser}
+		ORDER BY reg_date desc;
+ 	</select>
+ 	
+ 	<!-- 탈퇴시 팔로우 삭제 -->
+ 	<delete id="deleteUserAllFollow">
+ 		delete from follow where active_user=#{activeUser}
+ 	</delete>
+</mapper>

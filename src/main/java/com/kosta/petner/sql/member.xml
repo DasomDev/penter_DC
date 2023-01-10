@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.member">
+	<select id="getMyinfo" resultType="com.kosta.petner.bean.Member">
+		<![CDATA[
+			SELECT * FROM USERS WHERE ID = #{id}
+		]]>
+	</select>
+	
+	<update id="updateMyInfo" parameterType="com.kosta.petner.bean.Member">
+		<![CDATA[
+			UPDATE USERS 
+			SET 
+			EMAIL = 'ㄷㅇㅇㅇ'
+			WHERE id = 'cheddar'
+		]]>
+	</update>
+</mapper>
